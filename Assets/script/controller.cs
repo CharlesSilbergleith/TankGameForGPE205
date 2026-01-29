@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Controller : MonoBehaviour
 {
-    public Pawn pawn;
+    [HideInInspector] public Pawn pawn;
 
     public virtual void Update()
     {

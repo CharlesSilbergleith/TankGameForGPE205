@@ -1,11 +1,18 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PawnTank : Pawn
 {
-    public void Move(Vector2 move) {
-    
+   
+    public override void Move(Vector2 moveDirection)
+    {
+        mover.Move(moveDirection);
     }
-    public void Rotate(Vector2 rotate) { 
-    
+
+   
+
+    public override void Rotate(Vector2 rotateDirection)
+    {
+        mover.Rotate(rotateDirection);
     }
 }
