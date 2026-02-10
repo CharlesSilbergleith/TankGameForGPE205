@@ -3,8 +3,9 @@ using UnityEngine;
 public class PawnTank : Pawn
 {
     
-    private float timer;
-    public float reloadTime;
+    private float nextShootTime;
+    public float firerate;
+
     public override void Start()
     {
         // Save my tank in my GameManager
@@ -35,15 +36,15 @@ public class PawnTank : Pawn
     public override void Shoot()
     {
 
-        if (timer >= reloadTime)
+        if (Time.time>=nextShootTime)
         {
            
             shooter.Shoot();
-            timer = 0;
+           nextShootTime = Time.time+1/firerate;
         }
         
     }
     void Update() {
-        timer += Time.deltaTime;
+        
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2098307235745633927}
   - component: {fileID: 5064678328973089448}
   - component: {fileID: -2516077121702724116}
-  - component: {fileID: 7306674661227077426}
+  - component: {fileID: 7711822818529576958}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7306674661227077426
+--- !u!114 &7711822818529576958
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,9 +150,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 481692690271072266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16023815800dd234ab0c30a8f1c16f84, type: 3}
+  m_Script: {fileID: 11500000, guid: 30b0b788a592672469a2121a27a227dd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  lifetime: 5
-  damage: 0
-  speed: 0
+  m_EditorClassIdentifier: Assembly-CSharp::BulletTank
+  lifetime: 3
+  damage: 5
+  speed: 6
+  rb: {fileID: 0}

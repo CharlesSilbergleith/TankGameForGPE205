@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public abstract class Bullet : MonoBehaviour
 {
   
     
     public float lifetime;     // How long before it destroys itself
-    public int damage;          // How much damage it deals
+    public int damage;  
+    // How much damage it deals
    
     public float speed;
+    public Rigidbody rb;
     void Start()
     {
         // Automatically destroy the bullet after 'lifetime' seconds
@@ -37,5 +39,10 @@ public class bullet : MonoBehaviour
         // Destroy the bullet on any collision
         Destroy(gameObject);
     }
+    public abstract void Shoot();
+
+    public abstract void Shoot(float speed);
+
+    public abstract void Shoot(float speed, int dmg);
 }
 

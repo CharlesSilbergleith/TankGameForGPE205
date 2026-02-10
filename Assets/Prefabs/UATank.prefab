@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShooterTank
   bullet: {fileID: 481692690271072266, guid: e766155aed78d7444b2e1e6b709b9bd6, type: 3}
   fireForce: 5
+  damage: 0
 --- !u!1001 &5780876624556224387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -290,7 +291,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   moveSpeed: 5
   turnSpeed: 360
-  reloadTime: 3
+  firerate: 1
 --- !u!54 &1909517919598903293
 Rigidbody:
   m_ObjectHideFlags: 0
