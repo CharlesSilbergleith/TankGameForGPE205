@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerPawnPrefab;
     [Header("Up-to-date Lists")]
     public List<Pawn> tanks;
+    public List<Pawn> AITanks;
     public List<Controller> players;
 
     void Awake()
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
         // Create our up to date list objects (not just memory locations, but actual lists)
         tanks = new List<Pawn>();
         players = new List<Controller>();
+        AITanks = new List<Pawn>();
     }
 
     void Start()

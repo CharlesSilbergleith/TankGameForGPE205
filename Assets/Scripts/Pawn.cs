@@ -8,11 +8,14 @@ public abstract class Pawn : MonoBehaviour
     [HideInInspector] public Controller controller;
     public abstract void Move(Vector3 directionToMove);
     public abstract void Rotate(Vector3 directionToRotate);
-
+    public abstract void RotateTowards(Vector3 postition, float turnSpeed);
     public abstract void Shoot();
+    public abstract void OnDestroy();
 
     public float moveSpeed;
     public float turnSpeed;
+
+
     public Controller GetController () { return controller; }
 
     public virtual void Start()

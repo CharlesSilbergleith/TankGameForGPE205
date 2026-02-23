@@ -15,7 +15,7 @@ public class PawnTank : Pawn
         base.Start();
     }
 
-    public void OnDestroy()
+    public override void OnDestroy()
     {
         // Remove my tank from the GameManager list
         GameManager.instance.tanks.Remove(this);
@@ -46,5 +46,10 @@ public class PawnTank : Pawn
     }
     void Update() {
         
+    }
+
+    public override void RotateTowards(Vector3 postition,float turnSpeed) {
+        mover.RotateTowards(postition, turnSpeed);
+    
     }
 }

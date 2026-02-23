@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class MoverTank : Mover
+public class MoverAi : Mover
+
 {
     private Rigidbody rb;
 
@@ -26,20 +27,15 @@ public class MoverTank : Mover
         rotationAmount *= Time.deltaTime;
         transform.Rotate(0, rotationAmount, 0);
     }
-    public override void RotateTowards(Vector3 postition, float turnSpeed) { 
-            //tragert vector
+    public override void RotateTowards(Vector3 postition, float turnSpeed)
+    {
+        //tragert vector
         Vector3 vectorToTrage = postition - transform.position;
 
         // find the quaterunine 
         Quaternion lookRotation = Quaternion.LookRotation(vectorToTrage);
 
         // roatate just a little
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, turnSpeed* Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, turnSpeed * Time.deltaTime);
     }
-
-
-
-
-
-
 }
