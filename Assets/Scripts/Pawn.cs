@@ -11,6 +11,9 @@ public abstract class Pawn : MonoBehaviour
     public abstract void RotateTowards(Vector3 postition, float turnSpeed);
     public abstract void Shoot();
     public abstract void OnDestroy();
+    public virtual void MoveSound() { 
+    
+    }
 
     public float moveSpeed;
     public float turnSpeed;

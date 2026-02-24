@@ -1,61 +1,54 @@
 using UnityEngine;
-
 public class ControllerAI_Roamer : ControllerAi
 {
-   
+    public float timeInBetweenRoam = 2f;
+    private float nextRoamTime;
+    public float distance;
+
 
     public override void MakeDecisions()
     {
-        switch (currenState) {
+        base.MakeDecisions();
 
-            case AIState.Idel:
-                //do Nothing 
-                break;
+        switch (currentState)
+        {
+            case AIState.Idle:
+                DoIdle();
 
-            case AIState.Roam:
-                //TODO: rotate towred our roam direction 
-                //TODO: move forward 
-                
-                break;
-            case AIState.ChooseRoamDirection:
-                // TODO: choose new diretion 
-                break;
-            case AIState Attak:
-                if (!CanMoveForward(5))
+                if (Time.time >= nextRoamTime)
                 {
-                    ChangeState(AIState.Roam);
-                }                
+                    ChangeState(AIState.Patrol);
+                    nextRoamTime = Time.time + timeInBetweenRoam;
+                }
+
+                if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                {
+                    ChangeState(AIState.Shoot);
+                }
+
                 break;
 
-        
-        
-        
-        
-        
+            case AIState.Patrol:
+                DoPatrol(distance);
+
+               
+
+                if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                {
+                    ChangeState(AIState.Shoot);
+                }
+
+                break;
+
+            case AIState.Shoot:
+                DoShoot();
+
+                if (!CanSee(target.gameObject) || !CanHear(target.gameObject))
+                {
+                    ChangeState(AIState.Idle);
+                }
+
+                break;
         }
-
-
-
     }
-
-
-    public void DoIdeal() { 
-    
-    }
-
-    public void DoRaom() { 
-    
-    }
-
-    public void DoAttak() { 
-        
-    }
-    public void DoChooseRoamDirection() { 
-    
-    }
-
-
-
-
-
 }

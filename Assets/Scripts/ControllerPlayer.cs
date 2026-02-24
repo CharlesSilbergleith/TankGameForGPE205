@@ -22,9 +22,12 @@ public class ControllerPlayer : Controller
 
         // Write this function to make the decisions
         Vector2 movementVector = inputActions["Move"].ReadValue<Vector2>();
+        
         pawn.Move(new Vector2(0, movementVector.y));
         pawn.Rotate(new Vector2(movementVector.x, 0));
-
+        if(movementVector != new Vector2(0, 0) ){ 
+                    pawn.MoveSound();
+                }
         if (inputActions["Shoot"].triggered)
         {
 
@@ -34,7 +37,7 @@ public class ControllerPlayer : Controller
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Start()
+    public override void Start()
     {
         // Enable my input actions
         inputActions.Enable();

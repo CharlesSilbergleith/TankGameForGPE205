@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class ShooterAi : Shooter
 {
+    
     public override void Shoot()
     {
+
         GameObject newBullet = Instantiate(bullet, transform.position, transform.rotation);
 
         Bullet bulletScript = newBullet.GetComponent<Bullet>();

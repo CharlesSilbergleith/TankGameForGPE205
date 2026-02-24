@@ -5,7 +5,7 @@ public class ControllerAI_Defender : ControllerAi
     public Health health;
    
 
-    void Start() {
+    public override void Start() {
         health = GetComponent<Health>();
     }
 
@@ -16,12 +16,12 @@ public class ControllerAI_Defender : ControllerAi
         switch (currentState) {
 
             case AIState.Idle:
-                DoIdel();
+                DoIdle();
                 //check for trans
-                if (CanSee( target.gameObject ) || CanHear(target.gameObject) ){
+                if (CanSee(target.gameObject ) || CanHear(target.gameObject) ){
                     ChangeState(AIState.Chase);
                 }
-
+                
                 break;
             case AIState.Chase:
                 DoChase();
@@ -32,13 +32,18 @@ public class ControllerAI_Defender : ControllerAi
                 if (InRange(target.gameObject) ){
                     ChangeState(AIState.ChaseAndShoot);
                 }
-               
+                if (!(CanSee(target.gameObject)) || !(CanHear(target.gameObject)))
+                {
+                    ChangeState(AIState.Idle);
+                }
 
 
 
                 break;
             case AIState.ChaseAndShoot:
-                if (!CanSee(target.gameObject) || !CanHear(target.gameObject))
+                DoChaseAndShoot();
+
+                if (! (CanSee(target.gameObject)) || !(CanHear(target.gameObject)))
                 {
                     ChangeState(AIState.Idle);
                 }

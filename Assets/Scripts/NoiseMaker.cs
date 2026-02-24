@@ -1,3 +1,6 @@
+
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NoiseMaker : MonoBehaviour
@@ -10,6 +13,10 @@ public class NoiseMaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         
+    }
+   public void makeNoise(float noise) {
+        noiseVolume=noise;
     }
 }
