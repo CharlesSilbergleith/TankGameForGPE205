@@ -15,6 +15,7 @@ public class PawnTank : Pawn
         // Save my tank in my GameManager
         GameManager.instance.tanks.Add(this);
         noiseMaker = GetComponent<NoiseMaker>();
+        health = GetComponent<Health>();
         // Do what all pawns do
         base.Start();
     }

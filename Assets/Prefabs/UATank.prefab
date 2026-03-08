@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7494721802232888261}
   - component: {fileID: 2981569030324420691}
   - component: {fileID: 1259724347142146087}
+  - component: {fileID: 9112197681137669624}
   m_Layer: 0
   m_Name: UATank
   m_TagString: Untagged
@@ -54,7 +55,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5834076148275545a4e8a216d099f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnTank
+  mover: {fileID: 0}
   shooter: {fileID: 0}
+  health: {fileID: 0}
   controller: {fileID: 0}
   moveSpeed: 5
   turnSpeed: 360
@@ -206,8 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bf2df84f29cd984d84d3ba7c961f4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthTank
-  maxHealth: 0
-  health: 0
+  maxHealth: 10
+  health: 10
   death: {fileID: 0}
 --- !u!114 &1259724347142146087
 MonoBehaviour:
@@ -223,6 +226,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NoiseMaker
   noiseVolume: 0
   decayRate: 1
+--- !u!114 &9112197681137669624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358088688418267886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb63e806f1b090e46b7551e68ae43396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUpManger
 --- !u!1 &4491489711724477465
 GameObject:
   m_ObjectHideFlags: 0

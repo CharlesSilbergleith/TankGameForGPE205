@@ -203,7 +203,7 @@ public abstract class ControllerAi : Controller
         if (noise.noiseVolume <= 0) return false;
 
         float distance = Vector3.Distance(targetObj.transform.position, pawn.transform.position);
-        Debug.Log(distance <= (noise.noiseVolume + hearingDistance));
+        //Debug.Log(distance <= (noise.noiseVolume + hearingDistance));
         return distance <= (noise.noiseVolume + hearingDistance);
     }
 
