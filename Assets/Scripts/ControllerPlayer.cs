@@ -16,7 +16,6 @@ public class ControllerPlayer : Controller
     {
         if (pawn == null)
         {
-            Debug.LogError("Pawn is NULL on ControllerPlayer");
             return;
         }
 

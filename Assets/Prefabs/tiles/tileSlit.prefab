@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 3852563223320154453}
   m_Layer: 0
   m_Name: tileSlit
-  m_TagString: Untagged
+  m_TagString: TileSlit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1180,8 +1180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b133149bbc5154987f9fba5cf7d0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  doorNorth: {fileID: 4375355198363023277}
   doorSouth: {fileID: 4122967991429113449}
+  doorNorth: {fileID: 4375355198363023277}
   doorEast: {fileID: 8605139012796166966}
   doorWest: {fileID: 4624002564555072220}
 --- !u!1 &6564246324776103803

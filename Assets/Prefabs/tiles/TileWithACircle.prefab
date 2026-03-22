@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 2912962900074611826}
   m_Layer: 0
   m_Name: TileWithACircle
-  m_TagString: Untagged
+  m_TagString: TileWithACircle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -610,8 +610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b133149bbc5154987f9fba5cf7d0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  doorNorth: {fileID: 8987640671936646570}
   doorSouth: {fileID: 371295538791206791}
+  doorNorth: {fileID: 8987640671936646570}
   doorEast: {fileID: 1103311151046288021}
   doorWest: {fileID: 3753442242650683450}
 --- !u!1 &8987640671936646570

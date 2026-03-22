@@ -5,8 +5,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("Prefabs")]
-    public GameObject playerControllerPrefab;
-    public GameObject playerPawnPrefab;
+    public GameObject playerController;
+    public GameObject player;
     [Header("Up-to-date Lists")]
     public List<Pawn> tanks;
     public List<Pawn> AITanks;
@@ -28,14 +28,12 @@ public class GameManager : MonoBehaviour
         // Create our up to date list objects (not just memory locations, but actual lists)
         tanks = new List<Pawn>();
         players = new List<Controller>();
-        AITanks = new List<Pawn>();
     }
 
     void Start()
     {
         // Start the Game!
-        StartGame();
-
+       // StartGame();
     }
 
     public void StartGame()
@@ -50,10 +48,10 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer()
     {
         // Spawn a tank pawn (and store it in tempTankPawn)
-        Pawn tempTankPawn = SpawnTank(playerPawnPrefab);
+        Pawn tempTankPawn = SpawnTank(player);
 
         // Spawn a player controller (and store it in players)
-        Controller tempPlayerController = SpawnPlayerController(playerControllerPrefab);
+        Controller tempPlayerController = SpawnPlayerController(playerController);
 
         // Have the player possess the pawn
         tempPlayerController.Possess(tempTankPawn);
@@ -70,5 +68,6 @@ public class GameManager : MonoBehaviour
         GameObject tempPlayer = Instantiate<GameObject>(prefab, Vector3.zero, Quaternion.identity);
         return tempPlayer.GetComponent<Controller>();
     }
+    
 
 }

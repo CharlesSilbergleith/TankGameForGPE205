@@ -5,7 +5,7 @@ public class MoverTank : Mover
     private Rigidbody rb;
 
 
-    public void Start()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }

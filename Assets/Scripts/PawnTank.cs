@@ -18,6 +18,7 @@ public class PawnTank : Pawn
         health = GetComponent<Health>();
         // Do what all pawns do
         base.Start();
+        
     }
 
     public override void OnDestroy()

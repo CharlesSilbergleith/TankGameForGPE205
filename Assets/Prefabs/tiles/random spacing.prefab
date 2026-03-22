@@ -796,7 +796,7 @@ GameObject:
   - component: {fileID: 7769957190658548236}
   m_Layer: 0
   m_Name: random spacing
-  m_TagString: Untagged
+  m_TagString: RandomSpacing
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -844,8 +844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b133149bbc5154987f9fba5cf7d0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  doorNorth: {fileID: 9143257239521697200}
   doorSouth: {fileID: 8178586286389923520}
+  doorNorth: {fileID: 9143257239521697200}
   doorEast: {fileID: 5251344849008058696}
   doorWest: {fileID: 3627968396772053374}
 --- !u!1 &5001786436651909013

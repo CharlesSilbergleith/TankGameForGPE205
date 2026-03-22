@@ -18,8 +18,11 @@ public class MapGenerator : MonoBehaviour
     public int mapCols;
     public int mapRows;
     public Tile[,] grid;
+    public Tile playerSpawnTilePrefab;
+    private bool hasSpawnerYet;
 
-    void Start() {
+
+    void Awake() {
         InitializeRandom();
         GenMap();
 
@@ -66,51 +69,105 @@ public class MapGenerator : MonoBehaviour
                 tempTile.transform.position = CorrectPos;
                 //name the tile
                 tempTile.name = "tile(" + currentCol + "," + currentRow + ")";
+                WallShutOff(tempTile, currentCol, currentRow);
 
-                if (currentRow == 0) { 
-                    tempTile.doorNorth.SetActive(false);
-                }
-                else if(currentRow == mapRows - 1)
-                {
-                    tempTile.doorSouth.SetActive(false);
-                }
-                else {
-                    tempTile.doorNorth.SetActive(false);
-                    tempTile.doorSouth.SetActive(false);
-                }
-
-
-
-               if(currentCol == mapCols - 1)
-                            {
-                                tempTile.doorWest.SetActive(false);
-                            }
-                else if (currentCol == 0)
-                {
-                    tempTile.doorEast.SetActive(false);
-                }
-              
-                else {
-                    tempTile.doorEast.SetActive(false);
-                    tempTile.doorWest.SetActive(false);
-
-                }
-                    //save grid
-                    grid[currentCol ,currentRow ] = tempTile;
+                //save grid
+                grid[currentCol ,currentRow ] = tempTile;
 
 
 
             }//end col loop
         
         }// end row loop
+        EnsurePlayerSpawn();
     }
 
-    public Tile GetRandomTile() {
-        int tileNumber = UnityEngine.Random.Range(0, availableTiles.Count);
-        return availableTiles [tileNumber];
+    public Tile GetRandomTile()
+    {
+        // If we still need a spawn tile, allow it
+        if (!hasSpawnerYet)
+        {
+            int index = UnityEngine.Random.Range(0, availableTiles.Count);
+            Tile chosen = availableTiles[index];
+
+            if (chosen.tag == "PlayerSpawn")
+            {
+                hasSpawnerYet = true;
+                return chosen;
+            }
+
+            return chosen;
+        }
+        else
+        {
+            // Spawn already used  avoid PlayerSpawn tiles
+            List<Tile> nonSpawnTiles = availableTiles.FindAll(t => t.tag != "PlayerSpawn");
+
+            int index = UnityEngine.Random.Range(0, nonSpawnTiles.Count);
+            return nonSpawnTiles[index];
+        }
     }
+    void EnsurePlayerSpawn()
+    {
+        // If we already have one, do nothing
+        if (hasSpawnerYet)
+            return;
 
+        // Pick random grid position
+        int randCol = UnityEngine.Random.Range(0, mapCols);
+        int randRow = UnityEngine.Random.Range(0, mapRows);
 
+        Tile oldTile = grid[randCol, randRow];
 
+        // Store position & rotation
+        Vector3 pos = oldTile.transform.position;
+        Quaternion rot = oldTile.transform.rotation;
+
+        // Destroy old tile
+        Destroy(oldTile.gameObject);
+
+        // Spawn PlayerSpawn tile
+        Tile newTile = Instantiate(playerSpawnTilePrefab, pos, rot);
+        WallShutOff(newTile, randCol, randRow);
+        // Rename to match your system
+        newTile.name = "tile(" + randCol + "," + randRow + ")";
+
+        // Replace in grid
+        grid[randCol, randRow] = newTile;
+
+        hasSpawnerYet = true;
+
+        Debug.Log("Forced PlayerSpawn tile at: (" + randCol + ", " + randRow + ")");
+    }
+    void WallShutOff(Tile tile, int currentCol, int currentRow)
+    {
+        if (currentRow == 0)
+        {
+            tile.doorNorth.SetActive(false);
+        }
+        else if (currentRow == mapRows - 1)
+        {
+            tile.doorSouth.SetActive(false);
+        }
+        else
+        {
+            tile.doorNorth.SetActive(false);
+            tile.doorSouth.SetActive(false);
+        }
+
+        if (currentCol == mapCols - 1)
+        {
+            tile.doorWest.SetActive(false);
+        }
+        else if (currentCol == 0)
+        {
+            tile.doorEast.SetActive(false);
+        }
+        else
+        {
+            tile.doorEast.SetActive(false);
+            tile.doorWest.SetActive(false);
+        }
+    }
 
 }

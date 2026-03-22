@@ -5,7 +5,8 @@ public class ControllerAi_Runner : ControllerAi
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void MakeDecisions()
     {
-        base.MakeDecisions();
+     
+        base.MakeDecisions(); 
         //look at state 
         switch (currentState)
         {

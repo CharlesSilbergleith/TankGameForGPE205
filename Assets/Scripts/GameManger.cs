@@ -5,7 +5,7 @@ public class GameManger : MonoBehaviour
 {
     public static GameManger instatnce;
     public Controller palyerController;
-    public Pawn Pawn;
+    public Pawn pawn;
     public List<Pawn> tanks;
     public List<Controller> players;
 

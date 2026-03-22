@@ -107,6 +107,7 @@ public abstract class ControllerAi : Controller
             // Snap starting position
             Vector3 pos = pawn.transform.position;
             pos.x = Mathf.Round(pos.x);
+            pos.y = 2.600f;
             pos.z = Mathf.Round(pos.z);
             pawn.transform.position = pos;
 
@@ -194,7 +195,7 @@ public abstract class ControllerAi : Controller
 
     public bool CanHear(GameObject targetObj)
     {
-        
+
         if (targetObj == null) return false;
 
         NoiseMaker noise = targetObj.GetComponent<NoiseMaker>();
@@ -229,5 +230,5 @@ public abstract class ControllerAi : Controller
         return Vector3.Distance(pawn.transform.position, targetPosition) < 0.5f;
     }
 
-    
+
 }

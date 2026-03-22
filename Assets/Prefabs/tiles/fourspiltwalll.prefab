@@ -501,8 +501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b133149bbc5154987f9fba5cf7d0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  doorNorth: {fileID: 7085161217031696160}
   doorSouth: {fileID: 8949434312442917095}
+  doorNorth: {fileID: 7085161217031696160}
   doorEast: {fileID: 3903875619852375790}
   doorWest: {fileID: 713438695883697126}
 --- !u!1 &5846796705762538418

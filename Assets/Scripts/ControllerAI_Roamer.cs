@@ -8,20 +8,29 @@ public class ControllerAI_Roamer : ControllerAi
 
     public override void MakeDecisions()
     {
+
+    
         base.MakeDecisions();
+
+        if (target == null) return;
+
+        bool canSee = CanSee(target.gameObject);
+        bool canHear = CanHear(target.gameObject);
 
         switch (currentState)
         {
             case AIState.Idle:
                 DoIdle();
 
+                // Transition to patrol on timer
                 if (Time.time >= nextRoamTime)
                 {
                     ChangeState(AIState.Patrol);
                     nextRoamTime = Time.time + timeInBetweenRoam;
                 }
 
-                if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                // Immediate reaction to player
+                if (canSee || canHear)
                 {
                     ChangeState(AIState.Shoot);
                 }
@@ -31,9 +40,8 @@ public class ControllerAI_Roamer : ControllerAi
             case AIState.Patrol:
                 DoPatrol(distance);
 
-               
-
-                if (CanSee(target.gameObject) || CanHear(target.gameObject))
+                // Engage player if detected
+                if (canSee || canHear)
                 {
                     ChangeState(AIState.Shoot);
                 }
@@ -43,7 +51,8 @@ public class ControllerAI_Roamer : ControllerAi
             case AIState.Shoot:
                 DoShoot();
 
-                if (!CanSee(target.gameObject) || !CanHear(target.gameObject))
+                // Only leave when completely unaware of player
+                if (!canSee && !canHear)
                 {
                     ChangeState(AIState.Idle);
                 }
