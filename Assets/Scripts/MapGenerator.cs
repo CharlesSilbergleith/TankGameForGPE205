@@ -1,15 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
-using NUnit.Framework;
 using System;
 
 public enum RandomType { Random, Seeded, MapOfTheDay };
+
 public class MapGenerator : MonoBehaviour
 {
     [Header("Random Data")]
     public int seed = 27;
     public RandomType randomType;
-
 
     [Header("Tile Data")]
     public List<Tile> availableTiles;
@@ -18,137 +17,160 @@ public class MapGenerator : MonoBehaviour
     public int mapCols;
     public int mapRows;
     public Tile[,] grid;
+
+    [Header("Special Tiles")]
     public Tile playerSpawnTilePrefab;
-    private bool hasSpawnerYet;
+    public Tile enemySpawnTilePrefab;
 
+    private bool hasPlayerSpawnerYet;
+    private bool hasEnemySpawnerYet;
 
-    void Awake() {
+    
+
+    public void StartMapGen()
+    {
         InitializeRandom();
         GenMap();
-
     }
 
-    public void InitializeRandom() 
+    public void InitializeRandom()
     {
         if (randomType == RandomType.Seeded)
         {
             UnityEngine.Random.InitState(seed);
-
         }
         else if (randomType == RandomType.Random)
         {
             UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         }
-        else if(randomType == RandomType.MapOfTheDay)
+        else if (randomType == RandomType.MapOfTheDay)
         {
             UnityEngine.Random.InitState(DateToInt(DateTime.Now.Date));
         }
-        
     }
-    public int DateToInt(DateTime date) { 
-        return date.Year + date.Month+ date.Day;
+
+    public int DateToInt(DateTime date)
+    {
+        return date.Year + date.Month + date.Day;
     }
-    public void GenMap() { 
-        //nested forloops
-        //create grid array 
+
+    public void GenMap()
+    {
         grid = new Tile[mapCols, mapRows];
 
-        //itrate through
-        // create map tile
-        // put in pos
-        //open the correct doors 
-        // same it to the grid
+        for (int currentRow = 0; currentRow < mapRows; currentRow++)
+        {
+            for (int currentCol = 0; currentCol < mapCols; currentCol++)
+            {
+                Tile tempTile = Instantiate(GetRandomTile());
 
-        for (int currentRow = 0; currentRow < mapRows ; currentRow++) {
-            for (int currentCol = 0; currentCol <mapCols ; currentCol++) { 
-                Tile tempTile = Instantiate<Tile> (GetRandomTile()) as Tile;
+                Vector3 pos = Vector3.zero;
+                pos.z = currentRow * TileWidth;
+                pos.x = currentCol * TileLength;
+                tempTile.transform.position = pos;
 
-                Vector3 CorrectPos = Vector3.zero;
-                CorrectPos.z = currentRow * TileWidth;
-                CorrectPos.x = currentCol * TileLength ;
-                tempTile.transform.position = CorrectPos;
-                //name the tile
                 tempTile.name = "tile(" + currentCol + "," + currentRow + ")";
+
                 WallShutOff(tempTile, currentCol, currentRow);
 
-                //save grid
-                grid[currentCol ,currentRow ] = tempTile;
+                grid[currentCol, currentRow] = tempTile;
+                Debug.Log("made " + currentCol + ", " + currentRow);
+            }
+        }
 
-
-
-            }//end col loop
-        
-        }// end row loop
         EnsurePlayerSpawn();
+        EnsureEnemySpawn();
     }
 
     public Tile GetRandomTile()
     {
-        // If we still need a spawn tile, allow it
-        if (!hasSpawnerYet)
+        List<Tile> validTiles = new List<Tile>();
+
+        foreach (Tile tile in availableTiles)
         {
-            int index = UnityEngine.Random.Range(0, availableTiles.Count);
-            Tile chosen = availableTiles[index];
+            if (tile == playerSpawnTilePrefab && hasPlayerSpawnerYet)
+                continue;
 
-            if (chosen.tag == "PlayerSpawn")
-            {
-                hasSpawnerYet = true;
-                return chosen;
-            }
+            if (tile == enemySpawnTilePrefab && hasEnemySpawnerYet)
+                continue;
 
-            return chosen;
+            validTiles.Add(tile);
         }
-        else
-        {
-            // Spawn already used  avoid PlayerSpawn tiles
-            List<Tile> nonSpawnTiles = availableTiles.FindAll(t => t.tag != "PlayerSpawn");
 
-            int index = UnityEngine.Random.Range(0, nonSpawnTiles.Count);
-            return nonSpawnTiles[index];
-        }
+        int index = UnityEngine.Random.Range(0, validTiles.Count);
+        Tile chosen = validTiles[index];
+
+        if (chosen == playerSpawnTilePrefab)
+            hasPlayerSpawnerYet = true;
+
+        if (chosen == enemySpawnTilePrefab)
+            hasEnemySpawnerYet = true;
+
+        return chosen;
     }
+
     void EnsurePlayerSpawn()
     {
-        // If we already have one, do nothing
-        if (hasSpawnerYet)
+        if (hasPlayerSpawnerYet)
             return;
 
-        // Pick random grid position
         int randCol = UnityEngine.Random.Range(0, mapCols);
         int randRow = UnityEngine.Random.Range(0, mapRows);
 
-        Tile oldTile = grid[randCol, randRow];
+        ReplaceTile(randCol, randRow, playerSpawnTilePrefab);
 
-        // Store position & rotation
+        hasPlayerSpawnerYet = true;
+
+        Debug.Log("Forced PlayerSpawn at: (" + randCol + ", " + randRow + ")");
+    }
+
+    void EnsureEnemySpawn()
+    {
+        if (hasEnemySpawnerYet)
+            return;
+
+        int randCol;
+        int randRow;
+
+        // make sure we don’t overwrite player spawn
+        do
+        {
+            randCol = UnityEngine.Random.Range(0, mapCols);
+            randRow = UnityEngine.Random.Range(0, mapRows);
+        }
+        while (grid[randCol, randRow] == playerSpawnTilePrefab);
+
+        ReplaceTile(randCol, randRow, enemySpawnTilePrefab);
+
+        hasEnemySpawnerYet = true;
+
+        Debug.Log("Forced EnemySpawn at: (" + randCol + ", " + randRow + ")");
+    }
+
+    void ReplaceTile(int col, int row, Tile prefab)
+    {
+        Tile oldTile = grid[col, row];
+
         Vector3 pos = oldTile.transform.position;
         Quaternion rot = oldTile.transform.rotation;
 
-        // Destroy old tile
         Destroy(oldTile.gameObject);
 
-        // Spawn PlayerSpawn tile
-        Tile newTile = Instantiate(playerSpawnTilePrefab, pos, rot);
-        WallShutOff(newTile, randCol, randRow);
-        // Rename to match your system
-        newTile.name = "tile(" + randCol + "," + randRow + ")";
+        Tile newTile = Instantiate(prefab, pos, rot);
 
-        // Replace in grid
-        grid[randCol, randRow] = newTile;
+        newTile.name = "tile(" + col + "," + row + ")";
 
-        hasSpawnerYet = true;
+        WallShutOff(newTile, col, row);
 
-        Debug.Log("Forced PlayerSpawn tile at: (" + randCol + ", " + randRow + ")");
+        grid[col, row] = newTile;
     }
+
     void WallShutOff(Tile tile, int currentCol, int currentRow)
     {
         if (currentRow == 0)
-        {
             tile.doorNorth.SetActive(false);
-        }
         else if (currentRow == mapRows - 1)
-        {
             tile.doorSouth.SetActive(false);
-        }
         else
         {
             tile.doorNorth.SetActive(false);
@@ -156,13 +178,9 @@ public class MapGenerator : MonoBehaviour
         }
 
         if (currentCol == mapCols - 1)
-        {
             tile.doorWest.SetActive(false);
-        }
         else if (currentCol == 0)
-        {
             tile.doorEast.SetActive(false);
-        }
         else
         {
             tile.doorEast.SetActive(false);
@@ -170,4 +188,23 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    public void resetMap()
+    {
+        if (grid == null) return;
+
+        for (int r = 0; r < mapRows; r++)
+        {
+            for (int c = 0; c < mapCols; c++)
+            {
+                if (grid[c, r] != null)
+                {
+                    Destroy(grid[c, r].gameObject);
+                    grid[c, r] = null;
+                }
+            }
+        }
+
+        hasPlayerSpawnerYet = false;
+        hasEnemySpawnerYet = false;
+    }
 }

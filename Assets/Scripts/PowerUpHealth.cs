@@ -8,7 +8,6 @@ public class PowerUpHealth : PowerUp
 
     public override void Apply(Pawn target) {
         //TODO: Heal The Pawn in traget
-        Debug.Log("Heal");
         if (target.health != null && target.health.health != target.health.maxHealth) { 
             target.health.Heal(amountToHeal);
         }

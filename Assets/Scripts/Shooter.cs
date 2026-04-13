@@ -7,5 +7,6 @@ public abstract class Shooter : MonoBehaviour
     public abstract void Shoot();
     public float fireForce;
     public int damage;
+    public GameObject shooter;
 
 }

@@ -23,6 +23,7 @@ public class PawnAi : Pawn
         mover.Move(directionToMove, moveSpeed);
 
 
+
     }
     public override void Rotate(Vector3 directionToRotate) {
         mover.Rotate(directionToRotate, turnSpeed);

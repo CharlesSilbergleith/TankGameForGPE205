@@ -1,63 +1,75 @@
 using UnityEngine;
+
 public class ControllerAI_Roamer : ControllerAi
 {
     public float timeInBetweenRoam = 2f;
     private float nextRoamTime;
     public float distance;
 
-
     public override void MakeDecisions()
     {
-
-    
         base.MakeDecisions();
 
         if (target == null) return;
 
-        bool canSee = CanSee(target.gameObject);
-        bool canHear = CanHear(target.gameObject);
-
-        switch (currentState)
+        if (GameManager.instance.isCoop)
         {
-            case AIState.Idle:
-                DoIdle();
+            if (target2 == null) return;
 
-                // Transition to patrol on timer
-                if (Time.time >= nextRoamTime)
-                {
-                    ChangeState(AIState.Patrol);
-                    nextRoamTime = Time.time + timeInBetweenRoam;
-                }
+            bool p1 = CanSee(target.gameObject) || CanHear(target.gameObject);
+            bool p2 = CanSee(target2.gameObject) || CanHear(target2.gameObject);
 
-                // Immediate reaction to player
-                if (canSee || canHear)
-                {
-                    ChangeState(AIState.Shoot);
-                }
+            switch (currentState)
+            {
+                case AIState.Idle:
+                    DoIdle();
+                    if (Time.time >= nextRoamTime)
+                    {
+                        ChangeState(AIState.Patrol);
+                        nextRoamTime = Time.time + timeInBetweenRoam;
+                    }
+                    if (p1 || p2) ChangeState(AIState.Shoot);
+                    break;
 
-                break;
+                case AIState.Patrol:
+                    DoPatrol(distance);
+                    if (p1 || p2) ChangeState(AIState.Shoot);
+                    break;
 
-            case AIState.Patrol:
-                DoPatrol(distance);
+                case AIState.Shoot:
+                    if (p1) DoShoot(target);
+                    else DoShoot(target2);
 
-                // Engage player if detected
-                if (canSee || canHear)
-                {
-                    ChangeState(AIState.Shoot);
-                }
+                    if (!p1 && !p2) ChangeState(AIState.Idle);
+                    break;
+            }
+        }
+        else
+        {
+            bool seen = CanSee(target.gameObject) || CanHear(target.gameObject);
 
-                break;
+            switch (currentState)
+            {
+                case AIState.Idle:
+                    DoIdle();
+                    if (Time.time >= nextRoamTime)
+                    {
+                        ChangeState(AIState.Patrol);
+                        nextRoamTime = Time.time + timeInBetweenRoam;
+                    }
+                    if (seen) ChangeState(AIState.Shoot);
+                    break;
 
-            case AIState.Shoot:
-                DoShoot();
+                case AIState.Patrol:
+                    DoPatrol(distance);
+                    if (seen) ChangeState(AIState.Shoot);
+                    break;
 
-                // Only leave when completely unaware of player
-                if (!canSee && !canHear)
-                {
-                    ChangeState(AIState.Idle);
-                }
-
-                break;
+                case AIState.Shoot:
+                    DoShoot();
+                    if (!seen) ChangeState(AIState.Idle);
+                    break;
+            }
         }
     }
 }

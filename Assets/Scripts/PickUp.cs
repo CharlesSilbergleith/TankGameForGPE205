@@ -12,7 +12,14 @@ public class PickUp : MonoBehaviour
         theCollider.isTrigger = true;
 
     }
-    public virtual void  Update() { 
+    public virtual void  Update() {
+        
+            if (GameManager.instance.GameplayStateObject.activeSelf == false)
+            {
+                Destroy(this.gameObject);
+            }
+
+
         
     }
 

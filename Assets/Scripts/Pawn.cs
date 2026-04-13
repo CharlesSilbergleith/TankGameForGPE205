@@ -5,12 +5,29 @@ public abstract class Pawn : MonoBehaviour
     [HideInInspector] public Mover mover;
     public Shooter shooter;
     [HideInInspector] public Health health;
-    [HideInInspector] public Controller controller;
+    public Controller controller;
+
+
+    public virtual void Update()
+    {
+
+        if (GameManager.instance.GameplayStateObject.activeSelf == false)
+        {
+            Destroy(this.gameObject);
+        }
+
+
+
+    }
+
+
     public abstract void Move(Vector3 directionToMove);
     public abstract void Rotate(Vector3 directionToRotate);
     public abstract void RotateTowards(Vector3 postition, float turnSpeed);
     public abstract void Shoot();
     public abstract void OnDestroy();
+
+
     public virtual void MoveSound() { 
     
     }
@@ -27,5 +44,10 @@ public abstract class Pawn : MonoBehaviour
         mover = GetComponent<Mover>();
         shooter = GetComponentInChildren<Shooter>();
 
+    }
+    public void Possess(Controller controllerToPossess)
+    {
+        controllerToPossess.pawn = this;
+        this.controller = controllerToPossess;
     }
 }

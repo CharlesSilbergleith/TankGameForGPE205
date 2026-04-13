@@ -2,47 +2,56 @@ using UnityEngine;
 
 public abstract class Bullet : MonoBehaviour
 {
-  
-    
-    public float lifetime;     // How long before it destroys itself
-    public int damage;  
-    // How much damage it deals
-   
+    public float lifetime;
+    public int damage;
+    public GameObject shooter;
+    public Controller whoShot;
     public float speed;
     public Rigidbody rb;
+
     void Start()
     {
-        // Automatically destroy the bullet after 'lifetime' seconds
-       
         Destroy(gameObject, lifetime);
+
+       
+
+        Pawn pawnShot = shooter.GetComponentInParent<Pawn>();
+
+        
+
+        whoShot = pawnShot.controller;
     }
 
     void Update()
     {
-        // Move the bullet forward every frame
-       
-            transform.Translate(Vector3.forward * speed * Time.deltaTime); 
-     
-       
-        
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        // Example: if it hits something with a "Health" component, apply damage
-        Health targetHealth = other.GetComponent<Health>();
-        if (targetHealth != null)
+        if (shooter != null && other.transform.root.gameObject == shooter.transform.root.gameObject)
         {
-            targetHealth.TakeDamage(damage);
+            return;
         }
 
-        // Destroy the bullet on any collision
+        Health targetHealth = other.GetComponentInParent<Health>();
+
+        if (targetHealth != null)
+        {
+            ControllerAi targetController = targetHealth.GetComponentInParent<ControllerAi>();
+
+            targetHealth.TakeDamage(damage);
+
+            if (targetHealth.health <= 0 && targetController != null && whoShot != null)
+            {
+                whoShot.Score += 1;
+               
+            }
+        }
+
         Destroy(gameObject);
     }
+
     public abstract void Shoot();
-
     public abstract void Shoot(float speed);
-
     public abstract void Shoot(float speed, int dmg);
 }
-

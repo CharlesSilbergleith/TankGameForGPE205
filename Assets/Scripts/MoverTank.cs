@@ -3,16 +3,33 @@ using UnityEngine;
 public class MoverTank : Mover
 {
     private Rigidbody rb;
-
+    private Vector3 moveVector;
 
     public void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
+    public void Update()
+    {
+        if (moveVector != Vector3.zero)
+        {
+            if (!moveAudio.isPlaying)
+            {
+                moveAudio.Play();
+            }
+        }
+        else
+        {
+            if (moveAudio.isPlaying)
+            {
+                moveAudio.Stop();
+            }
+        }
 
+    }
     public override void Move(Vector2 moveDirection, float moveSpeed)
     {
-        Vector3 moveVector = new Vector3(moveDirection.x, 0, moveDirection.y);
+         moveVector = new Vector3(moveDirection.x, 0, moveDirection.y);
         moveVector = transform.TransformDirection(moveVector);
 
         //transform.position += moveVector * (pawn.moveSpeed * Time.deltaTime);

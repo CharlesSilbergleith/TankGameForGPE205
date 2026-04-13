@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BulletTank : Bullet
 {
-   
 
     public override void Shoot()
     {

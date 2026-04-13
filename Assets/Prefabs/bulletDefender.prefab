@@ -155,5 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BulletTank
   lifetime: 3
   damage: 5
-  speed: 6
+  shooter: {fileID: 0}
+  whoShot: {fileID: 0}
+  speed: 20
   rb: {fileID: 0}

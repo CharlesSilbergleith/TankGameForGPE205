@@ -2,46 +2,29 @@ using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    private GameObject player;
-    private GameObject playerController;
-    public MapGenerator mapGen;
-    private MeshRenderer Cube;
-    private Pawn playerobj;
-    private Controller playerControllerobj;
+    private MeshRenderer cube;
+
     void Awake()
     {
-        Cube = GetComponent<MeshRenderer>();
-        Cube.enabled=false;
-        mapGen = GetComponent<MapGenerator>();
-        player = GameManager.instance.player;
-        playerController = GameManager.instance.playerController;
-        
+        cube = GetComponent<MeshRenderer>();
+
+        if (cube != null)
+        {
+            cube.enabled = false;
+        }
     }
-    void Start() {
-    SpawnPlayer();
-    }
-    public void SpawnPlayer()
+
+    void Start()
     {
-        // Spawn a tank pawn (and store it in tempTankPawn)
-        Pawn tempTankPawn = SpawnTank(player);
+        if (GameManager.instance == null)
+        {
+            Debug.LogError("GameManager.instance is null");
+            return;
+        }
 
-        // Spawn a player controller (and store it in players)
-        Controller tempPlayerController = SpawnPlayerController(playerController);
-
-        // Have the player possess the pawn
-        tempPlayerController.Possess(tempTankPawn);
+        if (!GameManager.instance.p1Spawned)
+        {
+            GameManager.instance.SpawnPlayer();
+        }
     }
-
-    public Pawn SpawnTank(GameObject prefab)
-    {
-        GameObject tempTankObject = Instantiate<GameObject>(prefab,transform.position, Quaternion.identity);
-        return tempTankObject.GetComponent<Pawn>();
-    }
-
-    public Controller SpawnPlayerController(GameObject prefab)
-    {
-        GameObject tempPlayer = Instantiate<GameObject>(prefab, Vector3.zero, Quaternion.identity);
-        return tempPlayer.GetComponent<Controller>();
-    }
-
 }

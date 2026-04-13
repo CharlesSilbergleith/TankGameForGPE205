@@ -4,12 +4,17 @@ public abstract class Health : MonoBehaviour
 {
     public float maxHealth;
     public float health;
-    [HideInInspector] public Death death;
+     public Death death;
+    private bool Immune;
 
     public virtual void Start() {
         death = GetComponent<Death>();
     }
+    public void isImmune(bool immune) {
+        Immune = immune;
+    }
     public virtual void TakeDamage() {
+        if(!Immune)
         health -= 10;
         if (health <= 0)
         {
@@ -19,7 +24,8 @@ public abstract class Health : MonoBehaviour
     }
     public virtual void TakeDamage(float dmg)
     {
-        health -= dmg;
+        if (!Immune)
+            health -= dmg;
         if (health <= 0)
         {
             health = 0;
@@ -28,7 +34,8 @@ public abstract class Health : MonoBehaviour
         }
     }
     public virtual void takeDamage(int dmg) {
-        health -= dmg;
+        if (!Immune)
+            health -= dmg;
         if (health <= 0) {
             health = 0;
             death.Die();
@@ -37,6 +44,8 @@ public abstract class Health : MonoBehaviour
     public virtual void Heal(float healAmount) { 
         health += healAmount;
     }
-    
+    public virtual float healthPercent() { 
+        return health/maxHealth;
+    }
 
 }

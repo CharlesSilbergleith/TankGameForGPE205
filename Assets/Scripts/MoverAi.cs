@@ -4,16 +4,19 @@ public class MoverAi : Mover
 
 {
     private Rigidbody rb;
+    private Vector3 moveVector;
+    
 
 
-    public void Start()
+    public override void Start()
     {
         rb = GetComponent<Rigidbody>();
+        base.Start();
     }
 
     public override void Move(Vector2 moveDirection, float moveSpeed)
     {
-        Vector3 moveVector = new Vector3(moveDirection.x, 0, moveDirection.y);
+         moveVector = new Vector3(moveDirection.x, 0, moveDirection.y);
         moveVector = transform.TransformDirection(moveVector);
 
         //transform.position += moveVector * (pawn.moveSpeed * Time.deltaTime);
@@ -38,4 +41,23 @@ public class MoverAi : Mover
         // roatate just a little
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, turnSpeed * Time.deltaTime);
     }
+    public void Update()
+    {
+        if (moveVector != Vector3.zero)
+        {
+            if (!moveAudio.isPlaying)
+            {
+                moveAudio.Play();
+            }
+        }
+        else
+        {
+            if (moveAudio.isPlaying)
+            {
+                moveAudio.Stop();
+            }
+        }
+
+    }
+
 }

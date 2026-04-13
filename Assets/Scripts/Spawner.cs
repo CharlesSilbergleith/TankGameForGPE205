@@ -26,6 +26,11 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        CheckReal();
+
+
+
         if (spawnedObject == null)
         {
             // Subtract how much time has passed
@@ -42,5 +47,14 @@ public class Spawner : MonoBehaviour
                 countdownTimer = timeBetweenSpawns;
             }
         }
+    }
+
+
+    void CheckReal() {
+        if (GameManager.instance.GameplayStateObject.activeSelf == false) {
+            Destroy(this.gameObject);
+        }
+
+
     }
 }
